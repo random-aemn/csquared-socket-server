@@ -30,7 +30,7 @@ async def get_time_delayed_data():
     async with aiofiles.open("./data/rachel-headers-thin.csv", "r") as HEADERFILE:
         headerString = await HEADERFILE.read()
         KEY_LIST = headerString.split(",")
-        broadcast(CONNECTIONS, str(KEY_LIST))
+        #broadcast(CONNECTIONS, str(KEY_LIST))
         HEADERFILE.close
         
         
