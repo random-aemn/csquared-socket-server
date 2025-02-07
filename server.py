@@ -4,10 +4,12 @@ import asyncio
 import datetime
 import random
 import aiofiles
+import json
 
 from websockets.asyncio.server import broadcast, serve
 
 CONNECTIONS = set()
+KEY_LIST = list()
 
 async def register(websocket):
     CONNECTIONS.add(websocket)
@@ -24,9 +26,19 @@ async def show_time():
         await asyncio.sleep(1)
         
 async def get_time_delayed_data():
-    async with aiofiles.open('./data/rachel.csv') as DATAFILE:
+    await asyncio.sleep(5)
+    async with aiofiles.open("./data/rachel-headers-thin.csv", "r") as HEADERFILE:
+        headerString = await HEADERFILE.read()
+        KEY_LIST = headerString.split(",")
+        broadcast(CONNECTIONS, str(KEY_LIST))
+        HEADERFILE.close
+        
+        
+    async with aiofiles.open('./data/rachel-thin.csv') as DATAFILE:
         async for line in DATAFILE:
-            broadcast(CONNECTIONS, line)
+            value_list = line.split(",")
+            json_data = dict(zip(KEY_LIST, value_list))
+            broadcast(CONNECTIONS, json.dumps(json_data))
             await asyncio.sleep(1)
             
 
