@@ -15,7 +15,6 @@ and data file respectively.
 
 ## Imports
 ```pip install aiofiles```
-```pip install 
 
 ## Invoke the program as follows:
 ```python server.py ./data/rachel-thin```
