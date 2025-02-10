@@ -29,14 +29,14 @@ async def get_time_delayed_data():
     await asyncio.sleep(5)
     async with aiofiles.open("./data/rachel-headers-thin.csv", "r") as HEADERFILE:
         headerString = await HEADERFILE.read()
-        KEY_LIST = headerString.split(",")
+        KEY_LIST = headerString.strip().split(",")
         #broadcast(CONNECTIONS, str(KEY_LIST))
         HEADERFILE.close
         
         
     async with aiofiles.open('./data/rachel-thin.csv') as DATAFILE:
         async for line in DATAFILE:
-            value_list = line.split(",")
+            value_list = line.strip().split(",")
             json_data = dict(zip(KEY_LIST, value_list))
             broadcast(CONNECTIONS, json.dumps(json_data))
             await asyncio.sleep(1)
