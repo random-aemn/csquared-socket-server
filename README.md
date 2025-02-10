@@ -13,5 +13,9 @@ When invoking the program, supply a command line argument of ```rachel-thin``` a
 to the header file and data file to create both ```rachel-thin-headers.csv``` and ```rachel-thin.csv``` for the header file
 and data file respectively.
 
+## Imports
+```pip install aiofiles```
+```pip install 
+
 ## Invoke the program as follows:
 ```python server.py ./data/rachel-thin```
