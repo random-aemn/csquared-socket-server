@@ -143,10 +143,10 @@ Sourced from [AIS Navigation Status](https://api.vtexplorer.com/docs/ref-navstat
 |6	|Aground
 |7	|Engaged in Fishing
 |8	|Under way sailing
-|9	|Reserved for future amendment of Navigational Status for HSC
-|10	|Reserved for future amendment of Navigational Status for WIG
-|11	|Reserved for future use
-|12	|Reserved for future use
+|9	|reserved for future amendment of navigational status for ships carrying dangerous goods (DG), harmful substances(HS), or IMO hazard or pollutant category C, high-speed craft (HSC)
+|10	|reserved for future amendment of navigational status for ships carrying dangerous goods (DG), harmful substances (HS) or marine pollutants (MP), or IMO hazard or pollutant category A, wing in the ground (WIG).
+|11	|power-driven vessel towing astern.
+|12	|power-driven vessel pushing ahead or towing alongside
 |13	|Reserved for future use
 |14	|AIS-SART is active
 |15	|Not defined (default)
