@@ -18,3 +18,7 @@ and data file respectively.
 
 ## Invoke the program as follows:
 ```python server.py ./data/rachel-thin```
+
+
+## [AIS Data Dictionary](https://github.com/random-aemn/csquared-socket-server/blob/main/ais-dat-dictionary.md)
+
