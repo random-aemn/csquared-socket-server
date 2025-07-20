@@ -45,7 +45,12 @@ async def get_time_delayed_data():
             
 
 async def main():
-    async with serve(register, "localhost", 5678):
+    if len(sys.argv) < 3:
+        host = "127.0.0.1"
+    else:
+        host = "0.0.0.0"
+        
+    async with serve(register, host, 5678):
         # await show_time()
         await get_time_delayed_data()
 
