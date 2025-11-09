@@ -40,7 +40,9 @@ async def get_time_delayed_data():
         async for line in DATAFILE:
             value_list = line.strip().split(",")
             json_data = dict(zip(KEY_LIST, value_list))
-            broadcast(CONNECTIONS, json.dumps(json_data))
+            json_array = [json_data]
+            # broadcast(CONNECTIONS, json.dumps(json_data))
+            broadcast(CONNECTIONS, json.dumps(json_array))
             await asyncio.sleep(1)
             
 
