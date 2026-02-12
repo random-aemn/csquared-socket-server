@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 
 import asyncio
-import datetime
+from datetime import datetime, timedelta
 import random
 import aiofiles
 import json
 import sys
+from itertools import islice
+
 
 from websockets.asyncio.server import broadcast, serve
 
 CONNECTIONS = set()
 KEY_LIST = list()
+BATCH_SIZE = 9
 
 async def register(websocket):
     CONNECTIONS.add(websocket)
@@ -34,17 +37,47 @@ async def get_time_delayed_data():
         KEY_LIST = headerString.strip().split(",")
         #broadcast(CONNECTIONS, str(KEY_LIST))
         HEADERFILE.close
-        
-    dataFiileName = sys.argv[1] + '.csv'
-    async with aiofiles.open(dataFiileName) as DATAFILE:
+
+    dataFileName = sys.argv[1] + '.csv'
+    # allocate necessary variables
+    one_second = timedelta(seconds=1)
+    json_array = []
+    firstPass = True
+    REPORT_DATE_INDEX = 1
+    sentinelDate = None
+
+    async with aiofiles.open(dataFileName) as DATAFILE:
         async for line in DATAFILE:
+
+            line = str(line)
             value_list = line.strip().split(",")
             json_data = dict(zip(KEY_LIST, value_list))
-            json_array = [json_data]
-            # broadcast(CONNECTIONS, json.dumps(json_data))
+
+            if firstPass:
+                sentinelDate = datetime.fromisoformat(value_list[REPORT_DATE_INDEX])
+                json_array.append(json_data)
+                # sentinelDate = sentinelDate + one_second
+                firstPass = False
+       
+            else:
+                recordDate = datetime.fromisoformat(value_list[REPORT_DATE_INDEX])
+                if recordDate != sentinelDate:
+                    # New position report date found in data; publish the current list; clear the publication list
+                    # and add the most recent record to the publication list
+                    broadcast(CONNECTIONS, json.dumps(json_array))
+                    # sentinelDate = sentinelDate + one_second
+                    json_array = []
+                    while sentinelDate < recordDate:
+                        # Simulate the time delay between position reports
+                        sentinelDate = sentinelDate + one_second
+                        await asyncio.sleep(1)  
+                    json_array.append(json_data)
+                    
+                else:
+                    # Add current record to the publication list
+                    json_array.append(json_data)
             broadcast(CONNECTIONS, json.dumps(json_array))
-            await asyncio.sleep(1)
-            
+
 
 async def main():
     if len(sys.argv) < 3:
