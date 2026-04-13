@@ -76,7 +76,7 @@ async def get_time_delayed_data():
                 else:
                     # Add current record to the publication list
                     json_array.append(json_data)
-            broadcast(CONNECTIONS, json.dumps(json_array))
+        broadcast(CONNECTIONS, json.dumps(json_array))
 
 
 async def main():
