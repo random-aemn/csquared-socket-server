@@ -28,7 +28,7 @@ interface PositionReportStruct {
   "VesselTypeTxt" : string | null,
   "CargoTxt" : string | null,
   "Hazardous": string,
-  "Nav_Status": string 
+  "NavStatus": string 
 }
 ```
 
